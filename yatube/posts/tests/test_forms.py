@@ -1,14 +1,12 @@
 import shutil
-import tempfile
-
 from http import HTTPStatus
 
-from django.test import Client, TestCase
-from django.urls import reverse
 from django.conf import settings
-from posts.forms import PostForm
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import Client, TestCase
+from django.urls import reverse
+from posts.forms import PostForm
 
 from ..models import Group, Post, User
 
@@ -35,13 +33,12 @@ class PostFormTests(TestCase):
         )
         self.form = PostForm()
         cache.clear()
-    
+
     @classmethod
     # Удаление временной папки
     def tearDownClass(cls):
         shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
         super().tearDownClass()
-
 
     def test_create_post(self):
         """Валидная форма создает запись в Post."""

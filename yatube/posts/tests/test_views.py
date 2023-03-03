@@ -1,9 +1,10 @@
 
-from django.core.cache import cache
 from django import forms
+from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
-from ..models import Group, Post, User, Comment, Follow
+
+from ..models import Comment, Follow, Group, Post, User
 
 
 class PostPagesTests(TestCase):
@@ -31,14 +32,15 @@ class PostPagesTests(TestCase):
             post=cls.post,
             author=cls.user
         )
-        
-        cls.reverse_name = [(reverse('posts:index')), 
-                   (reverse('posts:group_list', kwargs={'slug': cls.group.slug})),
-                   (reverse('posts:post_edit', kwargs={'post_id': cls.post.pk})),
-                   (reverse('posts:post_create')),
-                   (reverse('posts:post_detail', kwargs={'post_id': cls.post.pk})),
-                   
-        ]
+
+        cls.reverse_name = [(reverse('posts:index')),
+                            (reverse('posts:group_list',
+                                     kwargs={'slug': cls.group.slug})),
+                            (reverse('posts:post_edit',
+                                     kwargs={'post_id': cls.post.pk})),
+                            (reverse('posts:post_create')),
+                            (reverse('posts:post_detail',
+                                     kwargs={'post_id': cls.post.pk})),]
 
     def setUp(self):
         self.guest_client = Client()
@@ -141,8 +143,6 @@ class FollowTest(TestCase):
         cls.post = Post.objects.create(
             author=cls.user_following,
             text='Тестовая запись для тестирования')
-        
-        
 
     def setUp(self):
         self.client_auth_follower = Client()
@@ -156,16 +156,20 @@ class FollowTest(TestCase):
         удалять других пользователей из подписок.
         """
         self.follow_unflow_list = {
-            reverse('posts:profile_follow', kwargs={'username': self.user_following.username}): 'posts/profile.html',
-            reverse('posts:profile_unfollow', kwargs={'username': self.user_following.username}): 'posts/profile.html',
+            reverse('posts:profile_follow',
+                    kwargs={'username': self.user_following.username}):
+                        'posts/profile.html',
+            reverse('posts:profile_unfollow',
+                    kwargs={'username': self.user_following.username}):
+                        'posts/profile.html',
         }
 
         for reverse_name, template in self.follow_unflow_list.items():
             with self.subTest(reverse_name=reverse_name):
                 response = self.client_auth_follower.get(
-                    reverse_name, follow=True, 
+                    reverse_name, follow=True,
                 )
-                self.assertIsNotNone(Follow.objects.all().count())      
+                self.assertIsNotNone(Follow.objects.all().count())
                 self.assertTemplateUsed(response, template)
 
     def test_subscription(self):

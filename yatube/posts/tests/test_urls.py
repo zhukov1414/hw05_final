@@ -29,7 +29,7 @@ class PostURLTests(TestCase):
         """Несуществующая страница вернет код 404"""
         response = self.guest_client.get('/nonexist-page/')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
-    
+
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {

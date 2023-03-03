@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
-from .forms import PostForm, CommentForm
+from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
 
 
@@ -76,7 +76,8 @@ def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if request.user != post.author:
         return redirect('posts:post_detail', post.pk,)
-    form = PostForm(request.POST or None, files=request.FILES or None, instance=post)
+    form = PostForm(request.POST or None,
+                    files=request.FILES or None, instance=post)
     if form.is_valid():
         post.save()
         return redirect('posts:post_detail', post.pk,)
