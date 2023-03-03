@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <style type="text/css">
+    h1 {
+      font-size: 50px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+    }
+  </style>
+</head>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Евгений Жуков — Автор этого проекта</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <p>Изначально мне нравилось программирование, так как с детсва интересовался этим направлнеием, но не хватало понимания с чего надо начинать,
+        до этого закончил колледж по профессии "Прикладная информатика по отраслям", много где работал не по специальности и появилась возможность отучиться
+        по программе цифровые профессии, что я в общем то и сделал.</p>
+        <p>Во время практики над этим проектов меня часто подталкивает не опускать руки моя супруга, которая переодически дает пинок
+          двигаться дальше, так как много не ясностей присутствует во время написания проекта, но сдаваться никто не собирается, и будем двигаться дальше и стараться
+          изучать дополнительный материал по темам, которые не очень понятны</p>
+      </div>
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <img src="{% static 'img/image/foto.jpg' %}" width="350" height="350">
+        <p>Смотрим в светлое будущее</p>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-12">
+        <h2>Контакты для связи</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <article class="col-12">
+        <p>Телефон: +7 (902) 752-86-33</p>
+        <p>Почта: <a href="zhukov1414: zhukov1414@yandex.ru"> zhukov1414@yandex.ru</a></p>
+        <p>GitHub: <a href="https://github.com/zhukov1414"> github.com/zhukov1414</a></p>
+      </article>
+    </div>
+  </div>
+{% endblock %} 
