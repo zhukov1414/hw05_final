@@ -40,7 +40,7 @@ class PostPagesTests(TestCase):
                                      kwargs={'post_id': cls.post.pk})),
                             (reverse('posts:post_create')),
                             (reverse('posts:post_detail',
-                                     kwargs={'post_id': cls.post.pk})),]
+                                     kwargs={'post_id': cls.post.pk})), ]
 
     def setUp(self):
         self.guest_client = Client()
