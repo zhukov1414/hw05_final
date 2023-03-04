@@ -17,7 +17,7 @@ def get_page_context(post_list, request):
 
 @cache_page(20, key_prefix="index_page")
 def index(request):
-    post_list = Post.objects.all().select_related('author', 'group')
+    post_list = Post.objects.select_related('author', 'group')
     return render(request, 'posts/index.html', {
         'page_obj': get_page_context(post_list, request), "index": True
     })
@@ -41,7 +41,6 @@ def profile(request, username):
     return render(request, 'posts/profile.html', {
         'page_obj': get_page_context(post_list, request),
         'author': author,
-        "post_count": post_list.count(),
         "following": following,
     })
 
@@ -50,11 +49,10 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.all()
     author = post.author
-    post_count = author.posts.count()
     form = CommentForm(request.POST or None)
     return render(request, 'posts/post_detail.html', {
         'post': post,
-        "post_count": post_count,
+        'author': author,
         'comments': comments,
         'form': form,
     })
@@ -68,7 +66,7 @@ def post_create(request):
         post.author = request.user
         form.save()
         return redirect('posts:profile', request.user)
-    return render(request, 'posts/create_post.html', {'form': form})
+    return render(request, 'includes/create_post.html', {'form': form})
 
 
 @login_required
@@ -81,7 +79,7 @@ def post_edit(request, post_id):
     if form.is_valid():
         post.save()
         return redirect('posts:post_detail', post.pk,)
-    return render(request, 'posts/create_post.html', {
+    return render(request, 'includes/create_post.html', {
         'form': form,
         'is_edit': True})
 
@@ -103,7 +101,7 @@ def follow_index(request):
     post_list = Post.objects.filter(author__following__user=request.user)
     context = {
         'page_obj': get_page_context(post_list, request),
-        "follow": True
+        'follow': True
     }
     return render(request, "posts/follow.html", context)
 

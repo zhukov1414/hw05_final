@@ -20,6 +20,14 @@ class PostURLTests(TestCase):
             text="Тестовый пост",
         )
 
+        cls.urls = ['/',
+                    '/create/',
+                    f'/group/{cls.group.slug}/',
+                    f'/profile/{cls.user.username}/',
+                    f'/posts/{cls.post.pk}/',
+                    f'/posts/{cls.post.pk}/edit/',
+                    '/follow/', ]
+
     def setUp(self):
         self.guest_client = Client()
         self.authorized_client = Client()
@@ -33,12 +41,13 @@ class PostURLTests(TestCase):
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
-            '/': 'posts/index.html',
-            '/create/': 'posts/create_post.html',
-            f'/group/{self.group.slug}/': 'posts/group_list.html',
-            f'/profile/{self.user.username}/': 'posts/profile.html',
-            f'/posts/{self.post.pk}/': 'posts/post_detail.html',
-            f'/posts/{self.post.pk}/edit/': 'posts/create_post.html',
+            self.urls[0]: 'posts/index.html',
+            self.urls[1]: 'includes/create_post.html',
+            self.urls[2]: 'posts/group_list.html',
+            self.urls[3]: 'posts/profile.html',
+            self.urls[4]: 'posts/post_detail.html',
+            self.urls[5]: 'includes/create_post.html',
+            self.urls[6]: 'posts/follow.html',
         }
 
         for url, template in templates_url_names.items():
@@ -50,8 +59,9 @@ class PostURLTests(TestCase):
     def test_posts_post_id_edit_url_exists_at_author(self):
         """Страницы доступные только автору."""
         url_names = {
-            f'/posts/{self.post.pk}/edit/': 'posts/create_post.html',
-            '/create/': 'posts/create_post.html',
+            self.urls[5]: 'includes/create_post.html',
+            self.urls[1]: 'includes/create_post.html',
+            self.urls[6]: 'posts/follow.html',
         }
         for address, template in url_names.items():
             with self.subTest(address=address):
