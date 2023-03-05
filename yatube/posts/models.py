@@ -7,47 +7,47 @@ User = get_user_model()
 
 
 class Group(models.Model):
-    title = models.CharField("Название", max_length=200)
-    slug = models.SlugField("Ссылка", max_length=18, unique=True)
-    description = models.TextField("Описание", max_length=250)
-
-    def __str__(self) -> str:
-        return self.title
+    title = models.CharField(max_length=200, verbose_name="Название")
+    slug = models.SlugField(max_length=18, unique=True, verbose_name="Ссылка")
+    description = models.TextField(max_length=250, verbose_name="Описание")
 
     class Meta():
-        ordering = ('-pk',)
-        verbose_name_plural = 'Группы'
+        ordering = ("-pk",)
+        verbose_name_plural = "Группы"
+
+    def __str__(self):
+        return self.title
 
 
 class Post(models.Model):
-    text = models.TextField(verbose_name='Текст')
-    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    text = models.TextField(verbose_name="Текст")
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='posts',
-        verbose_name='Автор')
+        related_name="posts",
+        verbose_name="Автор")
 
     group = models.ForeignKey(
         Group,
         blank=True,
         null=True,
-        related_name='posts',
+        related_name="posts",
         on_delete=models.SET_NULL,
-        verbose_name='Группа')
+        verbose_name="Группа")
 
     image = models.ImageField(
-        'Картинка',
-        upload_to='posts/',
+        "Картинка",
+        upload_to="posts/",
         blank=True
     )
-
-    def __str__(self) -> str:
-        return f'{self.text[:settings.COUNT_POSTS]}'
 
     class Meta():
         ordering = ['-pub_date']
         verbose_name_plural = 'Посты'
+
+    def __str__(self) -> str:
+        return f"{self.text[:settings.COUNT_POSTS]}"
 
 
 class Comment(models.Model):
@@ -66,12 +66,12 @@ class Comment(models.Model):
     text = models.TextField(verbose_name='Текст')
     created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f'{self.text} created {self.created}'
-
     class Meta:
         ordering = ('-created',)
         verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return f'{self.text} created {self.created}'
 
 
 class Follow(models.Model):
@@ -88,9 +88,6 @@ class Follow(models.Model):
         verbose_name='Автор',
     )
 
-    def __str__(self):
-        return f"{self.user.username} follows {self.author.username}"
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -100,3 +97,6 @@ class Follow(models.Model):
         ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return f"{self.user.username} follows {self.author.username}"
